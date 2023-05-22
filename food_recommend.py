@@ -106,15 +106,17 @@ class FoodRecommendation():
 
         # find c foods closest to the c splits
         cdist = [(0, None)] * c
+        cfoods = {}
         for idx, cal in enumerate(cal_seg):
             min_cal = sys.float_info.max
             for _, row in self._food_df[['name', 'calories']].iterrows():
                 dist = np.abs(cal - row.values[1])
                 
-                if dist < min_cal:
+                if row.values[1] not in cfoods and dist < min_cal:
                     cdist[idx] = (row.values[1], row.values[0])
+                    cfoods[row.values[1]] = True
                     min_cal = dist
-
+                    
         return cdist
     
 
