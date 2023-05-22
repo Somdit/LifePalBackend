@@ -80,7 +80,7 @@ class FoodRecommendation():
         Find k top food that have closest calories to the user calories
         : c - size of combinations of food items
         """
-
+        print(input_cal)
         # random split of input calories to get different combinations of food
         def _skewed_random(a, b, skewness=2, size=None):
             # usually one food of a meal should have larger weight (e.g. primary dish)
@@ -91,13 +91,15 @@ class FoodRecommendation():
             x = skewnorm.rvs(a_param, loc, scale, size)
             return x
         
+        # TODO: line 94-103 is changed
         # generate c random calories splits (skewed)
         cal_seg = []
         total_cal = input_cal
-        for _ in range(c):
+        for _ in range(c-1):
             cal = _skewed_random(0, total_cal, skewness=-2)
             cal_seg.append(cal)
             total_cal -= cal
+        cal_seg.append(total_cal)
 
         if debug == True:
             print(cal_seg)
@@ -110,7 +112,7 @@ class FoodRecommendation():
                 dist = np.abs(cal - row.values[1])
                 
                 if dist < min_cal:
-                    cdist[idx] = (dist, row.values[0])
+                    cdist[idx] = (row.values[1], row.values[0])
                     min_cal = dist
 
         return cdist
@@ -123,16 +125,16 @@ class FoodRecommendation():
         """
         cal_needs = self._calc_calneeds(weight, fat, avg_ae, time)
 
-        return self.find_foods(cal_needs, c)
+        return self.find_foods(cal_needs, c, debug=True)
     
 
 if __name__ == "__main__":
     path = 'food_datasets/test.json'
     fr = FoodRecommendation(path)
-    foods = fr.recommend_foods(weight=55, fat=0.165, avg_ae=0, time='lunch', c=3)
+    foods = fr.recommend_foods(weight=86.0999984741211, fat=0.201, avg_ae=428.47057142857096, time='lunch', c=3)
 
-    for dist, food_name in foods:
-        print(f"\033[1mFood Name\033[0m: {food_name}")
+    for food_cal, food_name in foods:
+        print(f"\033[1mFood Name\033[0m: {food_name} \t Calories: {food_cal}")
 
 
 
