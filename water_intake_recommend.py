@@ -5,6 +5,7 @@ from sklearn.model_selection import train_test_split, GridSearchCV
 from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import mean_squared_error
 import joblib
+import csv
 import os
 
 class WaterRecommendatio():
@@ -13,6 +14,7 @@ class WaterRecommendatio():
         : input_path -> path to dataset
         """
         self._init_prediction_model(input_path, file_name='water_intake_model', out_path='models')
+        self.input_path = input_path
 
     def _init_water_df(self, filepath):
         """
@@ -114,6 +116,11 @@ class WaterRecommendatio():
         intake_level = model.predict(X_scaled)
 
         return float(intake_level)
+
+
+    def _save_actual_intake(self, age, weight, height, avg_ae, temperature, actual_intake):
+        with open(self.input_path, 'w', newline='') as file:
+            file.writable
 
 
 if __name__ == "__main__":
