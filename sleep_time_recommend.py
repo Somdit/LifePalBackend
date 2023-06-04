@@ -171,7 +171,7 @@ class SleepRecommendation():
             log_avg_ae, log_in_bed_time, log_asleep_time, log_wake_time = log
             # calculate sleep efficiency score
             efficiency = log_asleep_time / log_in_bed_time
-            wake_time_minutes = self._time_to_minutes(log_wake_time)
+            wake_time_minutes = self._time_to_minutes(wake_time)
             in_bed_time_minutes = log_in_bed_time * 60
 
             if wake_time_minutes < in_bed_time_minutes:
@@ -219,5 +219,5 @@ if __name__ == "__main__":
     sleep_rcm = SleepRecommendation()
     #sleep_rcm._train_model('dev')
     #sleep_rcm.train_model('dev2')
-    print(sleep_rcm.recommend_sleep_times('dev2', 'pass2312', 9, 6.89, 654, "6:32"))
+    print(sleep_rcm.recommend_sleep_times('dev2', 'pass2312', 9, 6.89, 654, "1:00"))
 
